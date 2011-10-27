@@ -1,0 +1,10 @@
+The mod_websockets module for ProFTPD uses the libwebsockets library to
+provide a WebSockets interface to proftpd, for use for transferring files/data.
+(It's mostly a way for me to become more familiar with the WebSockets
+protocol.)
+
+I'm using the libwebsockets library available from:
+
+  http://git.warmcat.com/cgi-bin/cgit/libwebsockets/
+
+For further module documentation, see mod_websockets.html.
