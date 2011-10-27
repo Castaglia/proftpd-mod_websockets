@@ -1,0 +1,59 @@
+
+Directives
+
+  WebSocketsEngine
+  WebSocketsLog
+  WebSocketsOptions
+  WebSocketsProtocols
+  WebSocketsRequireSSL
+
+Questions
+
+How to require user authentication?  Which HTTP authentication schemes to
+support?
+
+Thoughts
+
+Structure mod_websockets to be like mod_sftp, where it "hijacks" the command
+loop, once a TCP connection is established.
+
+Haven't seen any drafts yet for any file transfer protocols over WebSockets.
+Might want to start collecting thoughts on this, based one experiences with
+FTP, SFTP, SCP, rsync, etc.
+
+Performance
+
+  How to best measure performance of data transfers via this module, compared
+  to SFTP/SCP (mod_sftp), FTPS (mod_tls), or just plain FTP (and HTTP)?
+
+    JMeter for HTTP, but it doesn't support the other session-oriented
+    protocols.  Might have to work up something else in the meantime.
+
+Articles
+
+  http://www.adambarth.com/papers/2011/huang-chen-barth-rescorla-jackson.pdf
+
+    Helps explain the per-frame nonce, and why the Origin header is an
+    important consideration.  Gives a great example of cache poisoning
+    for Google Analytics JavaScript.
+
+  http://www.faqs.org/rfcs/rfc4270.html
+
+    Attacks on Cryptographic Hashes in Internet Protocols
+
+  http://www.faqs.org/rfcs/rfc6066.html
+
+    Transport Layer Security (TLS) Extensions: Extension Definitions
+
+  http://www.faqs.org/rfcs/rfc6202.html
+
+    Known Issues and Best Practices for the Use of Long Polling and
+      Streaming in Bidirectional HTTP
+
+  http://www.faqs.org/rfcs/rfc6265.html
+
+    HTTP State Management Mechanism (HTTP Cookies)
+
+  http://tools.ietf.org/html/draft-ietf-websec-origin-05
+
+    The Web Origin Concept
