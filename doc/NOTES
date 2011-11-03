@@ -4,13 +4,30 @@ Directives
   WebSocketsEngine
   WebSocketsLog
   WebSocketsOptions
+    RequireOrigin
+      For clients that may not send the Origin HTTP header
   WebSocketsProtocols
   WebSocketsRequireSSL
+  WebSocketsMessageTimeout
+    A timeout for max time between message fragments, to prevent a malicious
+    client from "trickling" in message fragments, starving out other
+    connections.  Maybe even a max fragments count limit, max fragment size
+    limit, and max message size limit.
 
 Questions
 
 How to require user authentication?  Which HTTP authentication schemes to
 support?
+
+WebSockets uses SHA1 in the Sec-WebSocket-Key fields; why is this, given the
+info in RFC4270?  It's more a challenge-response sort of model -- except
+that the GUID to use is *hardcoded*, i.e. the structure of the GUID is known
+a priori.  Hrm.  Which means that it's not a proper challenge-response model.
+Why not have the client supply a new GUID in its Key header?
+
+WebSocket URIs don't support matrix params?  Should they?  Since these URIs
+are more for identifying "endpoints" rather than "resources", it is not as
+important.
 
 Thoughts
 
@@ -19,7 +36,13 @@ loop, once a TCP connection is established.
 
 Haven't seen any drafts yet for any file transfer protocols over WebSockets.
 Might want to start collecting thoughts on this, based one experiences with
-FTP, SFTP, SCP, rsync, etc.
+FTP, SFTP, SCP, rsync, etc.  While WebSockets is better suited for real-time
+back-and-forth applications, a file transfer protocol for it would not be
+a bad thing.  And, for network/cluster filesystems, it could be a very useful
+property indeed.  (Imagine a WebSockets file transfer protocol that was used
+for a remote filesystem for your mobile device, to multiple secure remote
+storage facilities.)  Shared music, photos, movies (MyTV!).  Email over
+WebSockets?  IM?
 
 Performance
 
@@ -36,6 +59,14 @@ Articles
     Helps explain the per-frame nonce, and why the Origin header is an
     important consideration.  Gives a great example of cache poisoning
     for Google Analytics JavaScript.
+
+  http://www.faqs.org/rfcs/rfc2616.html
+
+    Hypertext Transfer Protocol (HTTP 1.1)
+
+  http://www.faqs.org/rfcs/rfc2617.html
+
+    HTTP Authentication: Basic and Digest Authentication
 
   http://www.faqs.org/rfcs/rfc4270.html
 
@@ -57,3 +88,23 @@ Articles
   http://tools.ietf.org/html/draft-ietf-websec-origin-05
 
     The Web Origin Concept
+
+  http://tools.ietf.org/html/draft-ietf-secsh-filexfer-13
+
+    SSH File Transfer Protocol
+
+  http://www.lenholgate.com/blog/2011/07/websockets---the-deflate-stream-extension-is-broken-and-badly-designed.html
+
+    WebSockets deflate-stream commentary.  Very interesting.
+ 
+Ideas
+
+  Implement the SSH file transfer protocol as a WS sub-protocol.  It's
+  a more efficient file transfer protocol than FTP, wouldn't suffer from the
+  SSH2 issues (e.g. windowing), and could be updated to allow for bi-directional
+  request/responses.  Would need to rely on HTTP authentication (RFC2617),
+  and could be used for both ws:// and wss:// URIs.
+
+Tests
+
+  Make sure that control frames are not fragmented (especially Close frames).
